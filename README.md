@@ -12,8 +12,8 @@ Desarrolle una plataforma **ecommerce** para venta y compra de productos de alim
 - ¿Sos un cliente y quieres comprar alimentos más baratos??
 
 
-<div align="center">
-  Ingresa a nuestra web: https://ecommerce-antojito.onrender.com
+<div align="left">
+  <H1>Ingresa a la web : </H1> https://ecommerce-antojito.onrender.com
 </div><!--añadir imagen logo-->
 
 
