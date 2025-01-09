@@ -1,0 +1,377 @@
+
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    {% load static %}
+
+    <!-- Preconnect and Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+    <!-- Fonts - Para mostrar algunos iconos -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <!-- Bootstrap 5.3.3 -->
+    <link href="{% static 'ecommerce/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Styles propios de cada template -->
+    <link href="{% static 'ecommerce/css/base.css' %}" rel="stylesheet">
+
+    <!-- Styles para el carrito -->
+    <link href="{% static 'carrito/css/widget_carrito.css' %}" rel="stylesheet">
+    
+    <!-- For More CSS Modules -->
+    {% block extra_head %}
+        <!-- Cargar CSS o meta tags específicos de la página aquí -->
+    {% endblock %}
+    <style>
+        .voice-btn {
+            background-color: transparent;
+            border: none;
+            color: #fff; /* Color del ícono */
+            font-size: 20px; /* Tamaño del ícono */
+            cursor: pointer;
+        }
+
+        .voice-btn:hover {
+            color: #ccc; /* Color cuando pasas el mouse por encima */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+
+        <div class="container-fluid p-0 my-container-header">
+        
+            <div class="row mx-0" style="background-color:#DB3B3B;">
+                <!-- navbar -->
+                <div class="col-12">
+                    
+                    <nav class="navbar navbar-expand-lg fixed-top">
+
+                        <!-- BUTTON EN MODEL RESPONSIVE -->
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                            <span><i class="fa-solid fa-bars" style="color: white;"></i></span>
+                        </button>
+
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav my-container-center">
+                                <!-- LOGO EMPRESA -->
+                                <li class="nav-item col-2">
+                                    <a class="navbar-brand" href="{% url 'Home' %}">
+                                        <img src="{% static 'ecommerce/img/logo.png' %}" alt="LOGO" width="100%">
+                                    </a>
+                                </li>
+
+                                <!-- UBICACION -->
+                                <li class="nav-item col-2">
+                                    <button class="nav-link btn container-ubicacion" type=""> <p>Tu ubicacion</p> <br> <p>Direccion 1234</p></button>
+                                </li>
+                                
+                                <!-- PRODUCTOS -->
+                                <li class="nav-item col-1">
+                                    <a class="nav-link" href="{% url 'Producto' %}">Productos</a>
+                                </li>
+
+                                <!-- CATEGORIAS-->
+                                <li class="nav-item col-1 dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+                                    role="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        Categorías
+                                    </a>
+
+                                    <!-- DROP MENU CATEGORIAS -->
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown"
+                                        style="background-color: #db3b3bc4;">
+                                        {% for category in categories_all %}
+                                        <li>
+                                            <a class="dropdown-item" href="{% url 'Prod_Cat' category.id %}">
+                                                {{ category.name }} 
+                                            </a>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+
+                                <!-- SEARCH INPUT -->
+                                <li class="nav-item search-container">
+                                    <form class="d-flex" action="{% url 'Producto' %}" method="GET">
+                                        <input class="form-control me-2 search-input" type="search" 
+                                        placeholder="Buscar" aria-label="Search" name="top_search">
+                                        <!-- Botón de búsqueda -->
+                                        <button class="search-btn" type="submit" id="search-btn"><i class="fa fa-search"></i></button>
+                                        <!-- Botón de voz -->
+                                        <button class="voice-btn" type="button" id="voice-btn" style="margin-left: 10px;">
+                                            <i class="fa fa-microphone"></i>
+                                        </button>
+                                    </form>
+                                </li>
+
+                                <!-- ICONOS USER CART -->
+                                <li class="nav-item">
+                                    <!-- Widget desplegable para el inicio de sesión -->
+                                    {% include "registros/widget_registro.html" %}
+                                </li>
+
+                                <li class="nav-item">
+                                    <button class="btn-header" id="cart-button">
+                                        <i class="fas fa-shopping-cart"></i>
+                                        <!-- Badge para mostrar el número de productos -->
+                                        <span class="badge-cart" id="badge-cart-button">{{ total_productos }}</span>
+                                    </button>
+
+                                    {% include "carrito/widget_carrito.html" %}
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+                <!-- navbar -->
+            </div>
+
+
+            <!-- Tercera fila * -->
+            <div class="row">
+                <!-- Only Carousel home -->
+                <div class="col-lg-12 p-0">
+                    <!-- Tercera fila -->
+                     <!-- Solo existe si agregamos algo en este block content -->
+
+                    {% block header_content %}
+                        <!-- Contenido específico de la página HOME -->
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <!-- =================================================================
+                                Contenido Cambianteee 
+    ================================================================= -->
+    {% block content %}
+        <!-- Contenido específico de la página -->
+    {% endblock %}
+
+
+    <!-- footer -->
+    <footer id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="d-flex justify-content-around">
+                        <div class="footer-section">
+                            <h2>Servicio al cliente</h2>
+                            <ul>
+                                <li><a href="#">Ayuda</a></li>
+                                <li><a href="#">Iniciar sesión</a></li>
+                                <li><a href="#">Regístrate</a></li>
+                                <li><a href="#">Descuentos y promociones</a></li>
+                            </ul>
+                        </div>
+        
+                        <div class="footer-section">
+                            <h2>Categorías</h2>
+                            <ul>
+                                {% for category in categories_all %}
+                                    <li>
+                                        <a href="#">
+                                            {{ category }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+        
+                        <div class="footer-section">
+                            <h2>Más buscados</h2>
+                            <ul>
+                                <li><a href="#">Categoría 1</a></li>
+                                <li><a href="#">Categoría 2</a></li>
+                                <li><a href="#">Categoría 3</a></li>
+                            </ul>
+                        </div>
+        
+                        <div class="footer-section">
+                            <h2>Sobre nosotros</h2>
+                            <ul>
+                                <li><a href="#">Quiénes somos</a></li>
+                                <li><a href="#">Registra tu restaurante</a></li>
+                                <li><a href="#">Gestiona tu restaurante</a></li>
+                                <li><a href="#">Política de privacidad</a></li>
+                                <li><a href="#">Términos y condiciones</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+         <!-- FOOTER REDES SOCIALES-->
+        <div class="row footer-redes">
+            <div class="col-lg-3 col-md-3 col-sm-3 p-0">
+                <h2>Seguinos en redes</h2>
+                <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            </div>
+            <div class="col-1 p-0"></div>
+       </div>
+
+       <!-- FOOTER DERECHOS DE AUTOR-->
+       <div class="author">
+            <p>&copy; Copyright <strong>Antojitos</strong>. All Rights Reserved</p>
+       </div>
+    </footer>
+    <!-- footer -->
+    <!-- BOTON PARA VOLVER ARRIBA -->
+    <a class="btn-float-arrow" id="scrollToTopBtn">
+        <i><img src="{% static 'ecommerce/img/up-arrow.png' %}" alt="Up Arrow" width="50px"></i>
+    </a>
+    
+    <!-- Bootstrap Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="{% static 'ecommerce/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    
+
+    <script>
+        // SCRIPT DEL BOTON
+        document.addEventListener('DOMContentLoaded', function() {
+            const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+        
+            // Mostrar el botón cuando el usuario haga scroll hacia abajo
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 200) { // Muestra el botón si se desplaza más de 200px
+                    scrollToTopBtn.style.opacity = 1;
+                } else {
+                    scrollToTopBtn.style.opacity = 0;
+                }
+            });
+        
+            // Desplazarse hacia arriba cuando se hace clic en el botón
+            scrollToTopBtn.addEventListener('click', function(event) {
+                event.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+
+
+
+    <!-- MICROFONO STUFF -->
+    <script>
+        window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+        if ('SpeechRecognition' in window) {
+            console.log('SpeechRecognition está soportado en este navegador.');
+
+            document.addEventListener("DOMContentLoaded", function() {
+                let isVoiceActive = false; // Estado inicial (desactivado)
+
+                // Inicializar el reconocimiento de voz
+                const recognition = new SpeechRecognition();
+                recognition.lang = 'es-ES'; // Idioma (cambiar si es necesario)
+                recognition.continuous = false; // Detener después de una frase
+
+                // Seleccionar elementos del DOM
+                const voiceButton = document.getElementById("voice-btn");
+                const voiceIcon = voiceButton.querySelector("i");
+                const searchInput = document.querySelector(".search-input");  // Asegúrate que coincida con tu HTML
+                const searchForm = document.querySelector(".d-flex"); // Seleccionar el formulario de búsqueda
+
+                // Evento para activar/desactivar el micrófono
+                voiceButton.addEventListener("click", function() {
+                    isVoiceActive = !isVoiceActive;
+
+                    if (isVoiceActive) {
+                        // Cambiar el ícono a "microphone-slash" y comenzar el reconocimiento de voz
+                        voiceIcon.classList.remove("fa-microphone");
+                        voiceIcon.classList.add("fa-microphone-slash");
+                        voiceButton.style.color = "red"; // Cambiar color cuando está activado
+
+                        // Iniciar reconocimiento de voz
+                        recognition.start();
+                    } else {
+                        // Detener el reconocimiento de voz
+                        recognition.stop();
+                        voiceIcon.classList.remove("fa-microphone-slash");
+                        voiceIcon.classList.add("fa-microphone");
+                        voiceButton.style.color = ""; // Volver al color original
+                    }
+                });
+
+                // Evento cuando el reconocimiento de voz obtiene un resultado
+                recognition.onresult = function(event) {
+                    const transcript = event.results[0][0].transcript;
+                    console.log('Texto reconocido:', transcript);
+
+                    // Escribir lo reconocido en el campo de búsqueda
+                    searchInput.value = transcript;
+
+                    // Enviar el formulario de búsqueda automáticamente
+                    searchForm.submit();
+                };
+
+                // Evento cuando el reconocimiento de voz termina
+                recognition.onend = function() {
+                    if (isVoiceActive) {
+                        // Reiniciar reconocimiento si aún está activado
+                        recognition.start();
+                    }
+                };
+
+                // Manejo de errores
+                recognition.onerror = function(event) {
+                    console.error('Error en el reconocimiento de voz:', event.error);
+                    alert('Error en el reconocimiento de voz: ' + event.error);
+                };
+            });
+        } else {
+            console.error('SpeechRecognition no está soportado en este navegador.');
+        }
+    </script>
+
+    <!--
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    
+    -->
+
+
+    <!-- ==================================================================
+     #                  Mis Scripts personalizados
+     ===================================================================== -->
+
+    <!-- JavaScript for Carrito Widget -->
+    <script src="{% static 'carrito/js/widget_carrito.js' %}"></script>
+
+     <!-- JavaScript for Widget de registro button -->
+    <script src="{% static 'registros/js/widget_registro.js' %}"></script>
+    
+    
+
+    {% block extra_scripts %}
+    <!-- Cargas archivos .js propios de cada template/vista
+    - Por ahora solo se usa en producto_base.html
+
+    -->
+    {% endblock %}
+
+</body>
+</html>
+
+

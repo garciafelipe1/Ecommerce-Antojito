@@ -1,0 +1,112 @@
+
+
+{% extends "ecommerce/base.html" %}
+
+{% load static %}
+
+{% block extra_head %}
+    <!-- Cargar CSS o meta tags específicos de la página aquí -->
+    <link href="{% static 'productos/css/producto.css' %}" rel="stylesheet">
+    
+    <link  rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+
+    <link  rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.css">
+	
+{% endblock %}
+
+
+
+{% block content %}
+
+    <div class="container-fluid">
+        <div class="row p-0">
+            <!-- Sidebar -->
+            <div class="col-2 sidebar">
+                <!-- Titulo Side Bar -->
+                <h2> Filtros </h2>
+                <hr>
+                <!-- Search Form Categories -->
+                <div class="sidebar-search">
+                    <form id="search-form" class="form-group">
+                        <!-- Datos de las categorias para pasar y filtrar -->
+                        <input type="text" id="search-input" class="form-control"
+                            placeholder="Search..." onfocus="this.value=''"
+                            data-cat-id="{{category.id}}"
+                            data-sub-cat-id="{{sub_category.id}}"
+                            data-query-top="{{query}}">
+                    </form>
+                </div>
+                <hr>
+                <!-- Categories will be inserted here -->
+                <div class="sidebar-category">
+                    <!-- Top button on side bar -->
+                    <a href="{% url 'Home' %}"><strong>Todas las Categorias</strong></a>
+
+                    <!-- Cat = Category, sub_cats = Sub Category ; Se pasa del context Processor-->
+                    {% for cat, sub_cats in cat_n_subcats.items %}
+                        <a href="{% url 'Home' %}"><strong>{{ cat }}</strong></a>
+
+                        {% if sub_cats %}
+                        <!-- Submenú with SubCategories -->
+                            <ul class="category-list">
+                                {% for sub_cat in sub_cats %}
+                                    <li>
+                                        <a href="#{{sub_cat.name|slugify}}">
+                                            &nbsp;&nbsp;&nbsp;&nbsp;{{ sub_cat.name }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="col-10 p-4">
+                <!-- Todas las tarjetas en Carousel productos -->
+                {% include 'productos/carousel_productos.html' %}
+
+                <!-- Secciones con productos por SubCategoría -->
+                {% include 'productos/section_prod_subcat.html' %}
+            </div>
+        </div>
+    </div>
+    
+<!-- FIN Contenido específico de la página -->
+{% endblock %}
+
+
+
+{% block extra_scripts %}
+<!--  Cargas archivos .js propios de cada template/vista -->
+
+    <script src="{% static 'productos/js/ventanaEmergente.js' %}"></script>
+    <script src="{% static 'productos/js/add_btn.js' %}"></script>
+
+    <!-- Include slick-carousel JS library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
+
+    <!-- Esto es del carousel de productos -->
+    <script>
+        $(document).ready(function(){
+            $('.carousel').slick({
+                infinite: true,
+                slidesToShow: 4,  // Show 3 products at once
+                slidesToScroll: 1,
+                arrows: true,  // Show next/prev buttons
+                autoplay: true,  // Auto-slide
+                autoplaySpeed: 3000,  // Slide every 3 seconds
+                responsive: [
+                    {
+                        breakpoint: 768,  // For mobile devices
+                        settings: {
+                            slidesToShow: 1  // Show 1 product at once on smaller screens
+                        }
+                    }
+                ]
+            });
+        });
+    </script>   
+
+{% endblock %}

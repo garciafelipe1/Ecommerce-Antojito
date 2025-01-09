@@ -1,0 +1,122 @@
+
+
+
+<!-- CAROUSEL -->
+<div class="container-fluid px-3 mb-5">
+    <div class="carousel-producto-titulo">
+
+        <!-- Texto del span que muestra El Titulo de productos -->
+        <div class="carousel-producto-shape right-skew">
+            <i class="fa-solid fa-store"></i>
+
+            {% if category %}
+                <h3>{{category.name}}</h3>
+            {% else %}
+                <h3>Productos</h3>
+            {% endif %}
+        </div>
+
+        <!-- Categorias de alimentos -->
+        {% if category %}
+            <nav class="menu-categorias">
+                <ul>
+                    {% for subcategoria, productos in products_for_subcats.items %}
+                        <li>
+                            <a href="#{{subcategoria.name|slugify}}">
+                                {{subcategoria.name }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </nav>
+        {% endif %}
+    
+        <!-- Texto del span que muestra la cantidad de productos -->
+        <span class="carousel-producto-txt-titulo">
+            {% if productos|length < 4 %}
+                Mostrando {{ productos|length }} de {{ productos|length }} elementos
+            {% else %}
+                Mostrando 4 de {{ productos|length }} elementos
+            {% endif %}
+        </span>
+    </div>
+
+
+    <div class="carousel p-0 mt-3">
+
+        {% for producto in productos %}
+            <!-- Producto Item -->
+            <figure class="carousel-producto-item p-2" onclick="openModal({{producto.id}})">
+
+                <img src="{{ producto.image_url }}" alt="{{ producto.name }}">
+                <!-- <img src="{{ producto.image_url }}" alt="{{ producto.name }} (hover)"> -->
+                
+                <figcaption class="carousel-producto-datos">
+                    <!-- Nombre del producto -->
+                    <h3>{{ producto.name }}</h3>
+    
+                    <!-- Categoría y Subcategory -->
+                    <div class="carousel-producto-info">
+                        <a href="{% url 'Tienda_Profile' producto.seller.id %}"> {{ producto.seller.name_store }} </a>
+                        <div class="sub-card-prod-rating">
+                            <strong>{{ producto.seller.stars }}</strong>
+                            <strong class="stars">★</strong>
+                        </div>
+                    </div>
+
+                    <!-- Verificar si el producto está disponible o no -->
+                    <div class="carousel-producto-info">
+                        {% if not producto.available or producto.stock == 0 %}
+                            <div class="stock-rojo">No disponible</div>
+                        {% elif producto.stock <= 3 %}
+                            <div class="stock-naranja">Pocas unidades: {{ producto.stock }}</div>
+                        {% else %}
+                            <div class="stock-verde">Disponible: {{ producto.stock }}</div>
+                        {% endif %}
+                        
+                        <!-- TOP 10 BUTTON SIDE -->
+                        {% if user.is_authenticated %}
+                            <button class="heart-button" 
+                                onclick="event.stopPropagation(); 
+                                toggleHeart(this); 
+                                window.location.href='{% url 'Fav_Prod_R' producto.id %}';">
+                                <i class="fa-solid fa-heart"></i>
+                            </button>
+                        {% else %}
+                            <button class="heart-button" 
+                                onclick="event.stopPropagation(); 
+                                toggleHeart(this); 
+                                window.location.href='#';">
+                                <i class="fa-solid fa-heart"></i>
+                            </button>
+                        {% endif %}
+                    </div>
+
+                    <!-- Categoría y descuento -->
+                    <div class="carousel-producto-info">
+                        <strong>Descuento: </strong>
+                        <strong>%{{ producto.discount }} OFF</strong>
+                    </div>
+    
+                    <!-- Descripción del producto 
+                    <p>{{ producto.description }}</p> -->
+    
+                    <!-- Precios: Normal y Oferta -->
+                    <div class="carousel-producto-precios">
+                        <span class="precio-normal">Normal: ${{ producto.price }}</span>
+                        <!-- Precio con descuento (calculado por JavaScript) -->
+                        <strong class="precio-oferta" id="precio-oferta-{{ producto.id }}" data-price="{{ producto.price }}" data-discount="{{ producto.discount }}">
+                            Oferta: Calculando...
+                        </strong>
+                    </div>
+                </figcaption>
+
+                <!-- Botón de agregar al carrito -->
+                <button onclick="event.stopPropagation(); addToCart({{ producto.id}} );" class="carousel-producto-btn-carrito">
+                    <span>Agregar&nbsp;&nbsp; </span> 
+                    <i class="fas fa-shopping-basket"></i> 
+                </button>
+            </figure>
+        {% endfor %}
+    </div>
+</div>

@@ -1,0 +1,327 @@
+{% extends "ecommerce/base.html" %}
+
+{% load static %}
+{% load humanize %}
+
+
+<!-- For More CSS Modules -->
+{% block extra_head %}
+<!-- Cargar CSS o meta tags específicos de la página aquí -->
+<link href="{% static 'carrito/css/realizar_compra.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.com/libraries/font-awesome">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0 mb-5">
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10">
+            <div class="row mb-2">
+                <h1 class="titulo-carrito">Mi Carrito</h1>
+            </div>
+        </div>
+        <div class="col-lg-1"></div>
+    </div>
+
+    <!-- VISTAS CARRITO ITEMS -->
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-7">
+
+            <div class="card-cart-view">
+                <h1>Pago</h1>
+
+                <div class="checkout-form">
+                    <form>
+                        <!-- Datos personales -->
+                        <h3>Datos personales</h3>
+                        <div class="input-group">
+                            <label for="nombre">Nombre y apellidos</label>
+                            <input class="input-checkout" type="text" id="nombre"
+                                placeholder="Por ejemplo: Maria Sanchez">
+                        </div>
+
+                        <div class="input-group">
+                            <label for="telefono">Número de teléfono</label>
+                            <input class="input-checkout" type="tel" id="telefono" placeholder="11xxxxxxxx">
+                        </div>
+                    </form>
+
+
+                    <!-- Hora de entrega -->
+                    <div class="contenedor-boton-modal">
+                        <button type="button" class="modal-button-checkout" data-bs-toggle="modal"
+                            data-bs-target="#modalHora">
+                            <div class="modal-button-content">
+                                <div class="left-icon-form-checkout">
+                                    <i class="fas fa-clock"></i> <!-- Usa un icono de reloj -->
+                                </div>
+                                <div class="modal-button-text">
+                                    <h4>Hora de retiro de pedido</h4>
+                                </div>
+                                <div class="modal-button-flecha">
+                                    <i class="fas fa-chevron-right"></i> <!-- Flecha hacia la derecha -->
+                                </div>
+                            </div>
+                        </button>
+
+
+                        <!-- Modal de hora de retiro del pedido -->
+                        <div class="modal fade" id="modalHora" tabindex="-1" aria-labelledby="modalHoraLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="modalHoraLabel">Horario del retiro del pedido
+                                        </h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h4>Elegí en que horario querés retirar tu pedido</h4>
+                                        <select id="horario">
+                                            <option>16h</option>
+                                            <option>17h</option>
+                                            <option>18h</option>
+                                            <option>19h</option>
+                                            <option>20h</option>
+                                            <option>21h</option>
+                                            <option>22h</option>
+                                        </select>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Cerrar</button>
+                                        <button type="button" class="btn btn-primary btn-modal-guardar"
+                                            data-bs-dismiss="modal">Guardar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NOTA DEL PEDIDO -->
+                    <div>
+
+                        <button type="button" class="modal-button-checkout" data-bs-toggle="modal"
+                            data-bs-target="#modalNota">
+                            <div class="modal-button-content">
+                                <div class="left-icon-form-checkout">
+                                    <i class="fas fa-box"></i> <!-- icono -->
+                                </div>
+                                <div class="modal-button-text">
+                                    <h4>Nota del pedido</h4>
+                                </div>
+                                <div class="modal-button-flecha">
+                                    <i class="fas fa-chevron-right"></i> <!-- Flecha hacia la derecha -->
+                                </div>
+                            </div>
+                        </button>
+
+                        <!-- Modal de nota del pedido -->
+                        <div class="modal fade" id="modalNota" tabindex="-1" aria-labelledby="modalNotaLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="modalNotaLabel">Nota del pedido</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Deja una nota para el local:
+                                        <div class="input-group">
+                                            <textarea id="comentario" name="comentario" rows="2" cols="40"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Cerrar</button>
+                                        <button type="button" class="btn btn-primary btn-modal-guardar"
+                                            data-bs-dismiss="modal">Guardar cambios</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Método de pago -->
+                    <div>
+                        <button type="button" class="modal-button-checkout" data-bs-toggle="modal"
+                            data-bs-target="#modalPago">
+                            <div class="modal-button-content">
+                                <div class="left-icon-form-checkout">
+                                    <i class="far fa-credit-card"></i>
+                                </div>
+                                <div class="modal-button-text">
+                                    <h4>Seleccione el método de pago</h4>
+                                </div>
+                                <div class="modal-button-flecha">
+                                    <i class="fas fa-chevron-right"></i>
+                                </div>
+                            </div>
+                        </button>
+
+                        <!-- Modal de método de pago -->
+                        <div class="modal fade" id="modalPago" tabindex="-1" aria-labelledby="modalPagoLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="modalPagoLabel">Seleccione el método de pago:
+                                        </h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body wrapper">
+                                        <div class="box-payments">
+                                            <input type="radio" name="select" id="value-1">
+                                            <input type="radio" name="select" id="value-2">
+                                            <input type="radio" name="select" id="value-3">
+                                            <input type="radio" name="select" id="value-4">
+
+                                            <label for="value-1" class="value-1 label-opcion-tarjeta">
+                                                <i class="far fa-credit-card"></i>
+                                                <div class="text-metodo-pago">Tarjeta de débito</div>
+                                                <button type="button" class="btn-opcion-tarjeta" id="openPagoTarjeta">
+                                                    Agregar
+                                                </button>
+                                            </label>
+                                            <label for="value-2" class="value-2">
+                                                <i class="fa-regular fa-handshake"></i>
+                                                <div class="text-metodo-pago">Mercado pago</div>
+                                            </label>
+
+                                            <label for="value-3" class="value-3">
+                                                <i class="fa-solid fa-money-bill-wave"></i>
+                                                <div class="text-metodo-pago">Efectivo al recoger el pedido</div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Cerrar</button>
+                                        <button type="submit" class="btn btn-primary btn-modal-guardar"
+                                            data-bs-dismiss="modal">Guardar cambios</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal secundario (pagoTarjeta) -->
+                        <div class="modal fade" id="pagoTarjeta" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-xl">
+                                <div class="modal-content modal-add-card">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Pago con tarjeta</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <div class="card-info">
+                                            <div class="add-card">
+                                                <i class="far fa-credit-card"></i>
+                                                <span> Añade una nueva tarjeta</span>
+                                            </div>
+
+                                            <!-- Tarjeta Input -->
+                                            <div class="input-group-tarjeta">
+                                                <label for="card-number">Número de la tarjeta</label>
+                                                <input type="text" id="card-number" placeholder="Número de la tarjeta">
+                                            </div>
+
+                                            <!-- Nombre Titular -->
+                                            <div class="input-group-tarjeta">
+                                                <label for="card-name">Nombre del titular de la tarjeta</label>
+                                                <input type="text" id="card-name"
+                                                    placeholder="Nombre del titular de la tarjeta">
+                                            </div>
+
+                                            <!-- Fecha Expiración -->
+                                            <div class="input-group-tarjeta">
+                                                <label for="expiry-date">Fecha de expiración: </label>
+                                                <div class="expiry-group">
+                                                   <input type="text" id="expiry-month" placeholder="Mes">
+                                                   <input type="text" id="expiry-year" placeholder="Año">
+                                                </div>
+                                            </div>
+
+                                            <!-- CVV -->
+                                            <div class="input-group-tarjeta">
+                                                <label for="cvv">CVV</label>
+                                                <input type="text" id="cvv" placeholder="CVV">
+                                            </div>
+
+                                            <!-- Guardar datos de tarjeta -->
+                                            <div class="input-group-tarjeta save-card">
+                                                <input type="checkbox" id="save-card">
+                                                <label for="save-card">Guardar datos de la tarjeta</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="modal-footer-tarjeta">
+                                            <button type="submit" class="btn btn-primary submit-btn-tarjeta"
+                                                data-bs-dismiss="modal">Guardar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Container cupon -->
+                        <div class="container-coupon mt-4">
+                            <form>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="" placeholder="¿Tenés un cupon?">
+                                    <button class="input-group-append btn-coupon-apply" type="submit">
+                                        Aplicar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- contenedor derecho-->
+        <div class="col-lg-3">
+            <div class="card-total-cart-view">
+                <div class="total-row">
+                    <h5 class="mt-2">Total:</h5>
+                    <h5 class="mt-2" id="total-cart-view">
+                        ${{ carrito_total|floatformat:0|intcomma }}
+                    </h5>
+                </div>
+
+                <div class="total-row">
+                    <h5 class="mt-2 text-muted">Descuento:</h5>
+                    <h5 class="mt-2 text-muted">- $0.00</h5>
+                </div>
+
+                <hr class="total-divider"> <!-- Línea divisoria -->
+
+                <div class="total-row">
+                    <h5 class="mt-2">Total:</h5>
+                    <h5 class="mt-2" id="total-cart-view2">
+                        ${{ carrito_total|floatformat:0|intcomma }}
+                    </h5>
+                </div>
+
+                <button class="btn-pay-confirmar" onclick="window.location.href={% url 'compra_confirmada' %};">
+                    Confirmar
+                </button>
+            </div>
+        </div>
+
+        <div class="col-lg-1"></div>
+    </div>
+</div>
+
+<!-- JavaScript for Product Page -->
+{% block extra_scripts %}
+<script src="{% static 'carrito/js/realizar_compra.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+{% endblock %}
+{% endblock %}

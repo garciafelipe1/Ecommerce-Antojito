@@ -1,0 +1,259 @@
+
+
+
+{% extends "ecommerce/base.html" %}
+
+{% load static %}
+
+
+<!-- For More CSS Modules -->
+{% block extra_head %}
+    <!-- Cargar CSS o meta tags específicos de la página aquí -->
+    <link href="{% static 'registros/css/profile_page.css' %}" rel="stylesheet">
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4 mb-4">
+    <div class="row">
+        <!-- tarjeta del usuario e INFO CONTACTO
+        <div class="col-lg-3 col-md-4 col-sm-12"> -->
+        <div class="col-3">
+
+            <!-- Columna perfil + botones edit y logout -->
+            <div class="card shadow profile-panel">
+                <div class="card-body">
+                    <ul class="list-unstyled text-center">
+                        <li>
+                            <img class="img-fluid img-profile" 
+                            src="{{ user.image_url }}" 
+                            alt="User Image Profile">
+                        </li>
+                        <!-- nombre de usuario -->
+                        <li>
+                            {% if tienda %}
+                                <h4 class="mt-2"> {{ tienda.name_store }} </h4>
+                            {% else %}
+                                <h4 class="mt-2"> {{ user.first_name }} {{user.last_name}} </h4>
+                            {% endif %}
+                            
+                            <p class="text-muted">
+                                {{ user.email }}
+                            </p>
+                        </li>
+                        <li>
+                            <a href="#" class="btn btn-success w-100">
+                                Premium Account
+                            </a>
+                        </li>
+                        <li><br></li>
+
+                        <li>
+                            <!-- BOTONES EDITAR Y LOGEARSE -->
+                            <div class="btn-group-vertical w-100">
+                                {% if user.role == 'seller' %}
+                                    <button class="btn btn-outline-secondary d-flex justify-content-between align-items-center"
+                                    onclick="window.location.href='{% url 'Tienda_Profile' user.id %}';">
+                                        <span>Tu Tienda</span>
+                                        <i class="fa-solid fa-store"></i> 
+                                    </button>
+                                {% endif %}
+
+                                <button class="btn btn-outline-secondary d-flex justify-content-between align-items-center"
+                                        onclick="window.location.href='#'">
+                                    <span>Edit Account</span>
+                                    <i class="fas fa-cog"></i>
+                                </button>
+                            
+                                <button class="btn btn-outline-secondary d-flex justify-content-between align-items-center"
+                                        onclick="window.location.href='{% url 'Close_Session' %}'">
+                                    <span>Logout</span>
+                                    <i class="fas fa-sign-out-alt"></i>
+                                </button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div><!-- /.card -->
+            
+            <!-- Tarjeta Info Contacto -->
+            <div class="card shadow mt-3">
+                <div class="card-header">
+                    <h3 class="card-title">Contact</h3>
+                    <div class="float-end">
+                        <a href="#" class="btn btn-sm btn-success"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="btn btn-sm btn-success"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="btn btn-sm btn-success"><i class="fab fa-google-plus-g"></i></a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <i class="fas fa-envelope me-2"></i> {{ user.email }}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-phone me-2"></i> +54 9 {{ user.cellphone }}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fa-solid fa-house me-2"></i> {{user.address}}
+                        </li>
+                    </ul>
+                </div>
+            </div><!-- /.card -->
+        </div>
+
+        <!-- CONTENIDO del perfil    { % include 'registros/dashboard_vendedor.html' % }
+        <div class="col-lg-9 col-md-8 col-sm-12"> -->
+        <div class="col-9">
+            <div class="cover rounded shadow">
+                <!-- BANNER -->
+                <div class="banner-profile-cover">
+                    <img src="{{user.banner_image_url}}" 
+                        class="img-fluid" alt="cover">
+                </div>
+
+                <!-- ITEMS BANNER -->
+                <ul class="list-unstyled cover-menu">
+
+                    <li class="active">
+                        <a href="#" data-content="First Tab">
+                            {% if user.role == 'buyer' %}
+                                <i class="fas fa-store"></i>Mis Compras
+                            {% else %}
+                                <i class="fas fa-store"></i>Mis Productos
+                            {% endif %}
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#" data-content="Second Tab">
+                            {% if user.role == 'buyer' %}
+                                <i class="fa fa-heart"></i> Productos Favoritos
+                            {% else %}
+                                <i class="fas fa-clock"></i> Pedidos Pendientes
+                            {% endif %}                          
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#" data-content="Third Tab">
+                            {% if user.role == 'buyer' %}
+                                <i class="fa-solid fa-store"></i> Tienda Favoritas
+                            {% else %}
+                                <i class="fa-solid fa-money-check-dollar"></i> Ventas
+                            {% endif %}
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- DASHBOARD PRODUCTOS -->
+                <div id="first-tab" class="content-text">
+                    {% if user.role == 'buyer' %}
+                        Futuro Dashboard de Facturas de Compras
+                    {% else %}
+                        {% include 'registros/dashboard_vendedor.html' %}
+                    {% endif %}
+                </div>
+                
+                <div id="second-tab" class="content-text" style="display: none;">
+                    {% if user.role == 'buyer' %}
+                        {% include 'registros/dashboard_vendedor.html' %}
+                    {% else %}
+                        Futuro Segundo Tab
+                    {% endif %}
+                </div>
+
+                <div id="third-tab" class="content-text" style="display: none;">
+                    Futuro Tercer Tab
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block extra_scripts %}
+    <!-- Cargas archivos .js propios de cada template/vista -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuItems = document.querySelectorAll('.cover-menu li a');
+            // aca pongo los demas elementos que quiero mostrar y/o ocultar segun corresponda
+            const firstTab = document.getElementById('first-tab');
+            const secondTab = document.getElementById('second-tab');
+            const thirdTab = document.getElementById('third-tab');
+    
+            menuItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+    
+                    // Quita la clase 'active' de todos los elementos de lista
+                    menuItems.forEach(i => i.parentElement.classList.remove('active'));
+                    this.parentElement.classList.add('active');
+    
+                    const dataContent = this.getAttribute('data-content');
+    
+                    // Verifica si el data-content es 'Mis Productos' y muestra el dashboard
+                    if (dataContent === 'First Tab') {
+                        firstTab.style.display = 'block';
+                        secondTab.style.display = 'none';
+                        thirdTab.style.display = 'none';
+
+                    } else if (dataContent == 'Second Tab') {
+                        firstTab.style.display = 'none';
+                        secondTab.style.display = 'block';
+                        thirdTab.style.display = 'none';
+                    }
+                    // Seleccion del third tab
+                    else {
+                        firstTab.style.display = 'none';
+                        secondTab.style.display = 'none';
+                        thirdTab.style.display = 'block';
+                    }
+                });
+            });
+        });
+    </script>
+    
+    
+    <script>
+        // TODO ESTO ES REFEREIDO AL DASHBOARD
+		document.querySelector(".jsFilter").addEventListener("click", function () {
+				document.querySelector(".filter-menu").classList.toggle("active");
+		});
+		
+		document.querySelector(".grid").addEventListener("click", function () {
+				document.querySelector(".list").classList.remove("active");
+				document.querySelector(".grid").classList.add("active");
+				document.querySelector(".products-area-wrapper").classList.add("gridView");
+				document
+				.querySelector(".products-area-wrapper")
+				.classList.remove("tableView");
+		});
+		
+		document.querySelector(".list").addEventListener("click", function () {
+				document.querySelector(".list").classList.add("active");
+				document.querySelector(".grid").classList.remove("active");
+				document.querySelector(".products-area-wrapper").classList.remove("gridView");
+				document.querySelector(".products-area-wrapper").classList.add("tableView");
+		});
+		
+		var modeSwitch = document.querySelector('.mode-switch');
+
+		// Verificar el estado del tema al cargar la página para aplicar el modo adecuado
+		document.addEventListener('DOMContentLoaded', function() {
+			var isDarkMode = document.documentElement.classList.contains('dark-mode');
+			modeSwitch.classList.toggle('active', isDarkMode);
+		});
+
+		// Alternar el modo al hacer clic en el botón
+		modeSwitch.addEventListener('click', function() {
+			document.documentElement.classList.toggle('dark-mode');
+			modeSwitch.classList.toggle('active');
+		});
+	</script>
+
+{% endblock %}
