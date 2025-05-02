@@ -1,8 +1,4 @@
-<div align="center">
-  <img src="https://antojitos.up.railway.app/static/ecommerce/img/logo.png" alt="Logo" width="510" height="80">
-</div><!--añadir imagen logo-->
 
-<hr/>
 
 ## ✔ Descripción
 
